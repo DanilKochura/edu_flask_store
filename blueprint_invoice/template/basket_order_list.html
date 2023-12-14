@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Составление накладной</title>
+    <!-- CSS only -->
+   {% include 'parts/bootstrap.html' %}
+</head>
+
+<body>
+    {% include 'parts/common_navbar.html' %}
+
+
+<br></br>
+{% import 'basket_utils.html' as utils %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Доступные товары</h2>
+            {% if items %}
+                <div class="row">
+                {% for item in items %}
+                {{ utils.render_item(item, show_form = True, show_amount = False) }}
+            {% endfor %}
+                </div>
+            {% else %}
+                <p>Нет доступных товаров</p>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <h2 style="color:blue">Состав накладной</h2>
+            <a href="{{url_for('bp_order.clear_basket')}}" style="color:green">Очистить накладную</a>
+            {% if basket %}
+            {% for key in basket %}
+                {{ utils.render_cart_item(basket[key], show_form=False, show_amount=True) }}
+            {% endfor %}
+            <a href="{{url_for('bp_order.save_order')}}">Создать накладную</a> <br>
+            {% else %}
+                <p>Ваша накладная пуста</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "internal": [
+    "blueprint_report.start_report",
+    "blueprint_report.view_rep1",
+    "blueprint_report.view_rep2",
+    "bp_query"
+  ],
+  "admin": [
+    "bp_query",
+    "blueprint_report"
+  ],
+  "supplier": [
+    "bp_order"
+  ]
+}

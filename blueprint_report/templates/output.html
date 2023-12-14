@@ -1,0 +1,23 @@
+{% if error_message %}
+    <p class="bg-danger-subtle text-center fs-6 fw-bold my-3 py-3 rounded-4 shadow-sm text-danger">{{ error_message }}</p>
+{% endif %}
+{% if message %}
+    <p class="bg-info bg-opacity-25 text-center fs-6 fw-bold my-3 py-3 rounded-4 shadow-sm text-info">{{ message }}</p>
+{% endif %}
+{% if result %}
+    <table class="table table-bordered text-white rounded-4">
+        <tr>
+            {% for column in schema %}
+                <td class=border align="center">{{ column }}</td>
+
+            {% endfor %}
+        </tr>
+        {% for line in result %}
+            <tr>
+                {% for column in line %}
+                    <td> {{ column }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}

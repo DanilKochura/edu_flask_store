@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Количество товаров на складе</title>
+    {% include 'parts/bootstrap.html' %}
+
+</head>
+<body class="bg-dark text-white">
+    {% include 'parts/common_navbar.html' %}
+
+<h2 align="center">{{ title }}</h2>
+<div class="container  mt-3">
+    <div class="row">
+        <div class="col-5 border-1 border-left">
+            <h2>Выберите товар</h2>
+            <form action="" , method="POST">
+                <label>Выберите поставщика и год:</label>
+                <div class="row my-3">
+                    <div class="col-12">
+                        <select name="product_name" class="form-control" id="selectID">
+                    {% for name_product in all_product %}
+                        <option name="product" value="{{ name_product }}">{{ name_product }}</option>
+                    {% endfor %}
+
+                </select>
+                    </div>
+                </div>
+
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="subscribeNews" name="subscribe" value="yes">
+                    <label class="form-check-label" for="subscribeNews">
+                        Выбрать все товары
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-warning mt-4 ">Отправить</button>
+
+            </form>
+{#            <a  class="btn btn-sm btn-b"  href="{{ url_for('bp_query.start_queries') }}">Назад</a>#}
+
+        </div>
+        <div class="col-5">
+            {% include 'output.html' %}
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

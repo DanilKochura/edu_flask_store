@@ -1,0 +1,1 @@
+select id_prod, name, image, units from product

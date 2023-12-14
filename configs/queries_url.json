@@ -1,0 +1,18 @@
+{
+    "1":
+    {
+        "create_qrs": "bp_query.queries1"
+    },
+    "2":
+    {
+        "create_qrs": "bp_query.queries2"
+    },
+    "3":
+    {
+        "create_qrs": "bp_query.queries3"
+    },
+    "4":
+    {
+        "create_qrs": "bp_query.queries4"
+    }
+}

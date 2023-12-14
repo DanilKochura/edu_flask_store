@@ -1,0 +1,39 @@
+{% macro render_item(item, show_form=False, show_amount=False) %}
+    <div class="col-3 mb-4" style="">
+     <div class="p-1 border rounded-2">
+        <div class="text-center"><img src="{{ item['image'] }}" alt="" class="img-fluid" style="height: 120px">
+            </div>
+
+           <p class="fs-5 fw-bold text-info mb-2 overflow-hidden text-center"
+                   style="height: 4rem"> {{ item['name'] }} </p>
+
+        {% if show_form %}
+            <div>
+                <form action="" method="POST">
+                    <input type="hidden" name="id_prod" value="{{ item['id_prod'] }}">
+                    <input type="number" id="amount" class="form-control mt-2"  name="amount" min="1" step="1" placeholder="Количество">
+                    <input type="number" required id="price" name="price"  class="form-control mt-2" min="1" step="1" placeholder="Цена за {{ item['units'] }}.">
+                    <input type="submit" class="btn btn-success w-100 mt-2" name="action" value="Внести">
+                </form>
+            </div>
+        {% endif %}
+     </div>
+    </div>
+{% endmacro %}
+
+{% macro render_cart_item(item, show_form=False, show_amount=False) %}
+    <div class="row border rounded-2 my-2">
+        <div class="col-5">
+            <p class="fs-5 fw-bold text-info mb-2 overflow-hidden " style="height: 4rem"> {{ item['name'] }} </p>
+        </div>
+        <div class="col-2">
+            <p class=" fs-4"><span class="text-danger">{{ item['price']}}₽</span></p>
+        </div>
+    <div class="col-5">
+               <p>
+                    <span> Количество: </span>
+                <span> {{ item['amount'] }} </span>
+               </p>
+    </div>
+    </div>
+{% endmacro %}

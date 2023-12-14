@@ -1,0 +1,1 @@
+select name from product join stock on stock.id_product = product.id_prod

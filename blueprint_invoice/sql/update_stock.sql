@@ -1,0 +1,1 @@
+update stock set date_up='$today', amount=amount+'$amount' where id_product='$id_prod'

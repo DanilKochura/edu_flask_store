@@ -1,0 +1,1 @@
+insert product_invoice values(NULL, '$invoice_id', '$prod_id', '$prod_amount', '$price')

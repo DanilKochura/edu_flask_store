@@ -1,0 +1,1 @@
+select max(id_Inv) as max_id from invoice where id_Sup='$id_sup'
