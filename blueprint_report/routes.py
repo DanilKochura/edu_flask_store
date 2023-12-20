@@ -3,7 +3,7 @@ import os
 import json
 from datetime import date
 from access import group_required
-from database.db_work import call_proc, select
+from database.db_work import call_proc, select, select_dict
 from database.sql_provider import SQLProvider
 
 
@@ -36,23 +36,27 @@ def create_rep1():
         input_year = input_month[:4]
         input_month = input_month[5:]
         print(input_month, input_year)
-        # проверка на то, что такого отчета еще нет
-        _sql = provider.get('report_invoice.sql', input_month=input_month, input_year=input_year)
-        invoice_result, schema = select(current_app.config['db_config'], _sql)
-        print('invoice_result', invoice_result)
-        if input_year and input_month and len(invoice_result) == 0:
-            _proc = call_proc(current_app.config['db_config'], 'invoice_rep', input_month, input_year)
-            print('процедура', _proc)
-            _sql = provider.get('report_invoice.sql', input_month=input_month, input_year=input_year)
-            invoice_result, schema = select(current_app.config['db_config'], _sql)
-            if len(invoice_result) == 0:
+
+
+        if input_year and input_month:
+            _sql_check = provider.get('invoice_check.sql', input_month=input_month, input_year=input_year)
+            check = select_dict(current_app.config['db_config'], _sql_check)
+            if (len(check) == 0):
                 return render_template('report.html', message='За данный период нет поставок')
             else:
-                return render_template('report.html', message='Отчет успешно создан!')
-        elif not input_year or not input_month:
-            return render_template('report.html', error='Все поля должны быть заполнены.')
+                _sql = provider.get('report_invoice.sql', input_month=input_month, input_year=input_year)
+                invoice_result, schema = select(current_app.config['db_config'], _sql)
+                if len(invoice_result) == 0:
+                    _proc = call_proc(current_app.config['db_config'], 'invoice_rep', input_month, input_year)
+                    print('процедура', _proc)
+                    return render_template('report.html', message='Отчет успешно создан!')
+                else:
+                    return render_template('report.html', message='Такой отчет уже существует.')
         else:
-            return render_template('report.html', message='Такой отчет уже существует.')
+            return render_template('report.html', error='Все поля должны быть заполнены.')
+        # проверка на то, что такого отчета еще нет
+
+
 
 
 @blueprint_report.route('/create_rep2', methods=['GET', 'POST'])
@@ -67,18 +71,26 @@ def create_rep2():
         input_year = input_month[:4]
         input_month = input_month[5:]
         print(input_month, input_year)
-        # проверка на то, что такого отчета еще нет
-        _sql = provider.get('supplier.sql', input_month=input_month, input_year=input_year)
-        invoice_result, schema = select(current_app.config['db_config'], _sql)
-        print('invoice_result', invoice_result)
-        if input_year and input_month and len(invoice_result) == 0:
-            _proc = call_proc(current_app.config['db_config'], 'supplier_rep', input_month, input_year)
-            print('процедура', _proc)
-            return render_template('report.html', message='Отчет успешно создан!')
-        elif not input_year or not input_month:
-            return render_template('report.html', error='Все поля должны быть заполнены.')
+
+        if input_year and input_month:
+            _sql_check = provider.get('sup_check.sql', input_month=input_month, input_year=input_year)
+            check = select_dict(current_app.config['db_config'], _sql_check)
+            if len(check) == 0:
+                return render_template('report.html', message='За данный период не заключен ни один договор')
+            else:
+                _sql = provider.get('supplier.sql', input_month=input_month, input_year=input_year)
+                invoice_result, schema = select(current_app.config['db_config'], _sql)
+                print('invoice_result', invoice_result)
+                if  len(invoice_result) == 0:
+                    _proc = call_proc(current_app.config['db_config'], 'supplier_rep', input_month, input_year)
+                    print('процедура', _proc)
+                    return render_template('report.html', message='Отчет успешно создан!')
+                else:
+                    return render_template('report.html', message='Такой отчет уже существует.')
         else:
-            return render_template('report.html', message='Такой отчет уже существует.')
+            return render_template('report.html', error='Все поля должны быть заполнены.')
+        # проверка на то, что такого отчета еще нет
+
 
 
 @blueprint_report.route('/view_rep1', methods=['GET', 'POST'])
@@ -98,7 +110,7 @@ def view_rep1():
             _sql = provider.get('report_invoice.sql', input_month=input_month, input_year=input_year)
             product_result, schema = select(current_app.config['db_config'], _sql)
             if not product_result:
-                return render_template('report.html', message='За данный период нет поставок')
+                return render_template('report.html', message='Перед просмотром отчета нужно его создать')
             col = ['Поставщик', 'Сумма поставки', 'Дата поставки']
             return render_template('report.html', schema=col, result=product_result)
         else:
@@ -122,7 +134,7 @@ def view_rep2():
             _sql = provider.get('supplier.sql', input_month=input_month, input_year=input_year)
             product_result, schema = select(current_app.config['db_config'], _sql)
             if not product_result:
-                return render_template('report.html', message='За данный период не было заключено контрактов')
+                return render_template('report.html', message='Перед просмотром отчета нужно его создать')
             col = ['Поставщик', 'Банк', 'Телефон', 'Дата заключения контракта']
             return render_template('report.html', schema=col, result=product_result)
         else:
