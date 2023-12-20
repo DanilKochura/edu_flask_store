@@ -3,6 +3,7 @@ import json
 from flask import Flask, render_template, session, redirect, url_for
 from blueprint_auth.routes import blueprint_auth
 from blueprint_report.routes import blueprint_report
+from blueprint_invoice_suggest.routes import blueprint_confirmation
 from blueprint_query.route import blueprint_query
 from blueprint_invoice.route import blueprint_order
 from access import login_required, group_required
@@ -13,6 +14,7 @@ app = Flask(__name__)
 app.secret_key = 'SuperKey'
 
 app.register_blueprint(blueprint_auth, url_prefix='/blueprint_auth')
+app.register_blueprint(blueprint_confirmation, url_prefix='/confirmation')
 app.register_blueprint(blueprint_report, url_prefix='/blueprint_report')
 app.register_blueprint(blueprint_query, url_prefix='/queries')
 app.register_blueprint(blueprint_order, url_prefix='/order')

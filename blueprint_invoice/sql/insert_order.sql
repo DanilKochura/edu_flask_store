@@ -1,1 +1,1 @@
-insert invoice values(NULL, '$id_sup', '$sum', '$today')
+insert into invoice values(NULL, '$id_sup', '$sum', '$today', 0)

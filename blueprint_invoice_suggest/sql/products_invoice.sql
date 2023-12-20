@@ -1,0 +1,1 @@
+SELECT amount, price, name FROM `product_invoice` join product on product_invoice.id_prod = product.id_prod WHERE id_Inv = '$id_inv'

@@ -1,1 +1,1 @@
-select id_prod, name, image, units from product
+select id_prod, name, image, units from product where `group` in (select category from supplier_cats where supplier_id = '$sup_id')

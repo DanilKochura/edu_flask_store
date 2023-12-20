@@ -1,0 +1,1 @@
+SELECT i.id_Inv, sum_price, date_sup, name, phone FROM `invoice` as i join supplier as s on i.id_Sup = s.id_Sup  WHERE status = 0

@@ -16,10 +16,11 @@ provider = SQLProvider(os.path.join(os.path.dirname(__file__), 'sql'))
 @blueprint_order.route('/', methods=['GET', 'POST'])
 def order_index():
     df_config = current_app.config['db_config']
+    id_sup = session.get('supplier_id')
     cache_config = current_app.config['cache_config']
-    cached_select = fetch_from_cache('all_items_cached', cache_config)(select_dict) #явное задание декоратора
+    cached_select = fetch_from_cache('all_items_cached_'+str(id_sup), cache_config)(select_dict) #явное задание декоратора
     if request.method == 'GET':
-        sql = provider.get('all_items.sql')
+        sql = provider.get('all_items.sql', sup_id=id_sup)
         items = cached_select(df_config, sql)
         basket_items = session.get('blueprint_invoice', {})
         print('items', items)
@@ -29,7 +30,7 @@ def order_index():
         id_prod = request.form['id_prod']
         amount = request.form['amount']
         price = request.form['price']
-        sql = provider.get('all_items.sql')
+        sql = provider.get('all_items.sql', sup_id=id_sup)
         items = select_dict(df_config, sql)
 
         if amount:

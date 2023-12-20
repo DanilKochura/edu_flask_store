@@ -7,7 +7,11 @@
   ],
   "admin": [
     "bp_query",
-    "blueprint_report"
+    "blueprint_report",
+    "blueprint_invoice_suggest"
+  ],
+  "manager": [
+    "blueprint_invoice_suggest"
   ],
   "supplier": [
     "bp_order"

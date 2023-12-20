@@ -18,9 +18,10 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 {{ nav_tab('Главная', 'menu_choice') }}
-                {% if session.get('user_group', None) in ['admin', 'internal'] %}
+                {% if session.get('user_group', None) in ['admin', 'internal', 'manager'] %}
                     {{ nav_tab('Запросы', 'bp_query.start_queries') }}
                     {{ nav_tab('Отчеты', 'blueprint_report.start_report') }}
+                    {{ nav_tab('Накладные', 'blueprint_invoice_suggest.confirmation') }}
                 {% elif session.get('user_group', None) in ['supplier'] %}
                     {{ nav_tab('Каталог', 'bp_order.order_index') }}
                 {% endif %}

@@ -1,0 +1,1 @@
+update invoice set status = 1 where id_Inv = '$id_inv'
