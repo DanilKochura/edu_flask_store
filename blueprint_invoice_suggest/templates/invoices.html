@@ -53,12 +53,12 @@
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed  bg-dark bg-op text-secondary" type="button"
                                     data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                    data-bs-target="#flush-collapseTwo{{ invoice['id_Inv'] }}" aria-expanded="false"
                                     aria-controls="flush-collapseTwo">
                                 Посмотреть состав накладной
                             </button>
                         </h2>
-                        <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                        <div id="flush-collapseTwo{{ invoice['id_Inv'] }}" class="accordion-collapse collapse"
                              data-bs-parent="#accordion{{ invoice['id_Inv'] }}">
                             <div class="accordion-body  bg-dark bg-op text-secondary border-0">
                                 <table class="table table-bordered text-white rounded-4">

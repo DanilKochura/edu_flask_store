@@ -1,10 +1,12 @@
 {% extends 'exceptions/base.html' %}
 
 {% block external_users %}
-<div>
+<div class="container">
+<div class="bg-danger-subtle text-center fs-6 fw-bold my-3 py-3 rounded-4 shadow-sm text-danger">
     <center>
-    <h1>Данный ресурс доступен только для сотрудников</h1>
+    <h1>В доступе отказано</h1>
     <p>Запросите доступ у администратора или войдите под учетной записью сотрудника</p>
     </center>
+</div>
 </div>
 {% endblock %}

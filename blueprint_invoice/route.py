@@ -1,6 +1,8 @@
 import os
 
 from flask import Blueprint, render_template, request, current_app, session, redirect, url_for
+
+from access import external_required
 from database.db_context_manager import DBContextManager
 from datetime import date
 from database.db_work import select_dict, insert, select
@@ -14,6 +16,7 @@ provider = SQLProvider(os.path.join(os.path.dirname(__file__), 'sql'))
 
 
 @blueprint_order.route('/', methods=['GET', 'POST'])
+@external_required
 def order_index():
     df_config = current_app.config['db_config']
     id_sup = session.get('supplier_id')
@@ -48,13 +51,13 @@ def add_to_basket(id_prod: str, items: dict, user_amount=1, price_user=1):
 
     if id_prod in curr_basket:
         curr_basket[id_prod]['amount'] += user_amount
-        curr_basket[id_prod]['price'] += user_amount*price_user
+        curr_basket[id_prod]['price'] +=price_user
     else:
         if user_amount > 1:
             curr_basket[id_prod] = {
                 'name': item_description['name'],
                 'amount': user_amount,
-                'price': price_user*user_amount
+                'price': user_amount
             }
         else:
             curr_basket[id_prod] = {
