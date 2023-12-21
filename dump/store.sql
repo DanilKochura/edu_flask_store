@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Дек 14 2023 г., 19:33
+-- Время создания: Дек 21 2023 г., 18:23
 -- Версия сервера: 10.4.28-MariaDB
 -- Версия PHP: 8.2.4
 
@@ -20,14 +20,11 @@ SET time_zone = "+00:00";
 --
 -- База данных: `store`
 --
-CREATE DATABASE IF NOT EXISTS `store` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `store`;
 
 DELIMITER $$
 --
 -- Процедуры
 --
-DROP PROCEDURE IF EXISTS `invoice_rep`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `invoice_rep` (`rep_month` INT, `rep_year` INT)   BEGIN
  insert into invoie_rep
  select id_Inv, name, sum_price, date_sup
@@ -35,7 +32,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `invoice_rep` (`rep_month` INT, `rep
     where year(date_sup)=rep_year and month(date_sup)=rep_month;
 END$$
 
-DROP PROCEDURE IF EXISTS `supplier_rep`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `supplier_rep` (`rep_month` INT, `rep_year` INT)   BEGIN
 DECLARE done INT DEFAULT 0;
     DECLARE name_sup varchar(45);
@@ -65,7 +61,6 @@ DELIMITER ;
 -- Структура таблицы `external_user`
 --
 
-DROP TABLE IF EXISTS `external_user`;
 CREATE TABLE `external_user` (
   `user_id` int(11) NOT NULL,
   `user_group` varchar(45) NOT NULL,
@@ -93,7 +88,6 @@ INSERT INTO `external_user` (`user_id`, `user_group`, `login`, `password`, `supp
 -- Структура таблицы `internal_user`
 --
 
-DROP TABLE IF EXISTS `internal_user`;
 CREATE TABLE `internal_user` (
   `user_id` int(11) NOT NULL,
   `user_group` varchar(45) DEFAULT NULL,
@@ -107,7 +101,8 @@ CREATE TABLE `internal_user` (
 
 INSERT INTO `internal_user` (`user_id`, `user_group`, `login`, `password`) VALUES
 (1, 'admin', 'admin', 'admin'),
-(2, 'internal', 'manager', 'manager');
+(2, 'internal', 'manager', 'manager'),
+(3, 'manager', 'man', 'man');
 
 -- --------------------------------------------------------
 
@@ -115,7 +110,6 @@ INSERT INTO `internal_user` (`user_id`, `user_group`, `login`, `password`) VALUE
 -- Структура таблицы `invoice`
 --
 
-DROP TABLE IF EXISTS `invoice`;
 CREATE TABLE `invoice` (
   `id_Inv` int(11) NOT NULL,
   `id_Sup` int(11) NOT NULL,
@@ -129,20 +123,22 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`id_Inv`, `id_Sup`, `sum_price`, `date_sup`, `status`) VALUES
-(60, 1, 159869, '2023-12-09', 0),
-(61, 1, 6000, '2023-12-09', 0),
-(62, 1, 6390, '2023-12-09', 0),
-(63, 4, 43523, '2023-12-09', 0),
-(64, 6, 18930, '2023-12-09', 0),
-(65, 5, 49492, '2023-12-09', 0),
-(66, 6, 5600, '2023-12-11', 0),
-(67, 6, 14840, '2023-12-12', 0),
-(68, 6, 6942, '2023-12-12', 0),
-(69, 6, 240, '2023-12-13', 0),
-(70, 4, 10200, '2023-12-13', 0),
-(71, 4, 5600, '2023-12-13', 0),
-(72, 4, 9600, '2023-12-13', 0),
-(73, 2, 122, '2023-12-14', 0);
+(60, 1, 159869, '2023-12-09', 1),
+(61, 1, 6000, '2023-12-09', 1),
+(62, 1, 6390, '2023-12-09', 1),
+(63, 4, 43523, '2023-12-09', 1),
+(64, 6, 18930, '2023-12-09', 1),
+(65, 5, 49492, '2023-12-09', 1),
+(66, 6, 5600, '2023-12-11', 1),
+(67, 6, 14840, '2023-12-12', 1),
+(68, 6, 6942, '2023-12-12', 1),
+(69, 6, 240, '2023-12-13', 1),
+(70, 4, 10200, '2023-12-13', 1),
+(71, 4, 5600, '2023-12-13', 1),
+(72, 4, 9600, '2023-12-13', 1),
+(73, 2, 122, '2023-12-14', 1),
+(74, 5, 1, '2023-12-20', 1),
+(81, 2, 144, '2023-12-21', 0);
 
 -- --------------------------------------------------------
 
@@ -150,7 +146,6 @@ INSERT INTO `invoice` (`id_Inv`, `id_Sup`, `sum_price`, `date_sup`, `status`) VA
 -- Структура таблицы `invoie_rep`
 --
 
-DROP TABLE IF EXISTS `invoie_rep`;
 CREATE TABLE `invoie_rep` (
   `id_Inv_rep` int(11) NOT NULL,
   `name_sup` varchar(45) NOT NULL,
@@ -158,26 +153,12 @@ CREATE TABLE `invoie_rep` (
   `date_sup` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Дамп данных таблицы `invoie_rep`
---
-
-INSERT INTO `invoie_rep` (`id_Inv_rep`, `name_sup`, `sum_sup`, `date_sup`) VALUES
-(60, 'РосПродукт', 159869, '2023-12-09'),
-(61, 'РосПродукт', 6000, '2023-12-09'),
-(62, 'РосПродукт', 6390, '2023-12-09'),
-(63, 'ВкусВилл', 43523, '2023-12-09'),
-(64, 'Лента', 18930, '2023-12-09'),
-(65, 'Метро', 49492, '2023-12-09'),
-(66, 'Лента', 5600, '2023-12-11');
-
 -- --------------------------------------------------------
 
 --
 -- Структура таблицы `product`
 --
 
-DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `id_prod` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
@@ -216,7 +197,6 @@ INSERT INTO `product` (`id_prod`, `name`, `prod_code`, `units`, `group`, `image`
 -- Структура таблицы `product_invoice`
 --
 
-DROP TABLE IF EXISTS `product_invoice`;
 CREATE TABLE `product_invoice` (
   `id_prod_inv` int(11) NOT NULL,
   `id_Inv` int(11) NOT NULL,
@@ -259,7 +239,9 @@ INSERT INTO `product_invoice` (`id_prod_inv`, `id_Inv`, `id_prod`, `amount`, `pr
 (107, 70, 4, 30, 340),
 (108, 71, 5, 140, 40),
 (109, 72, 6, 75, 128),
-(110, 73, 1, 1, 122);
+(110, 73, 1, 1, 122),
+(111, 74, 10, 1, 1),
+(121, 81, 2, 12, 12);
 
 -- --------------------------------------------------------
 
@@ -267,7 +249,6 @@ INSERT INTO `product_invoice` (`id_prod_inv`, `id_Inv`, `id_prod`, `amount`, `pr
 -- Структура таблицы `stock`
 --
 
-DROP TABLE IF EXISTS `stock`;
 CREATE TABLE `stock` (
   `id_stock` int(11) NOT NULL,
   `id_product` int(11) NOT NULL,
@@ -280,9 +261,9 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`id_stock`, `id_product`, `date_up`, `amount`) VALUES
-(23, 2, '2023-12-09', 106),
-(24, 3, '2023-12-12', 149),
-(25, 1, '2023-12-14', 435),
+(23, 2, '2023-12-21', 143),
+(24, 3, '2023-12-21', 159),
+(25, 1, '2023-12-21', 458),
 (26, 13, '2023-12-09', 80),
 (27, 14, '2023-12-09', 30),
 (28, 17, '2023-12-09', 50),
@@ -293,7 +274,8 @@ INSERT INTO `stock` (`id_stock`, `id_product`, `date_up`, `amount`) VALUES
 (33, 11, '2023-12-11', 50),
 (34, 4, '2023-12-13', 30),
 (35, 5, '2023-12-13', 140),
-(36, 6, '2023-12-13', 75);
+(36, 6, '2023-12-21', 98),
+(37, 10, '2023-12-20', 1);
 
 -- --------------------------------------------------------
 
@@ -301,7 +283,6 @@ INSERT INTO `stock` (`id_stock`, `id_product`, `date_up`, `amount`) VALUES
 -- Структура таблицы `supplier`
 --
 
-DROP TABLE IF EXISTS `supplier`;
 CREATE TABLE `supplier` (
   `id_Sup` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
@@ -328,10 +309,35 @@ INSERT INTO `supplier` (`id_Sup`, `name`, `city`, `bank`, `bank_acc`, `phone`, `
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `supplier_cats`
+--
+
+CREATE TABLE `supplier_cats` (
+  `id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `category` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `supplier_cats`
+--
+
+INSERT INTO `supplier_cats` (`id`, `supplier_id`, `category`) VALUES
+(1, 7, 'продукты'),
+(2, 5, 'бытовая химия'),
+(3, 3, 'продукты'),
+(4, 1, 'бытовая химия'),
+(5, 6, 'косметика'),
+(6, 5, 'канцелярия'),
+(7, 2, 'продукты'),
+(8, 4, 'продукты');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `supplier_rep`
 --
 
-DROP TABLE IF EXISTS `supplier_rep`;
 CREATE TABLE `supplier_rep` (
   `id_rep_sup` int(11) NOT NULL,
   `name_sup` varchar(45) NOT NULL,
@@ -345,10 +351,8 @@ CREATE TABLE `supplier_rep` (
 --
 
 INSERT INTO `supplier_rep` (`id_rep_sup`, `name_sup`, `bank`, `phone`, `date_treaty`) VALUES
-(11, 'Пятерочка', 'Тинькофф', '79121242298', '2023-09-01'),
-(12, 'Перекресток', 'Сбербанк', '78910382433', '2023-09-23'),
-(13, 'РосПродукт', 'Сбербанк', '79109792161', '2023-10-24'),
-(14, 'Метро', 'Сбербанк', '79876534567', '2023-10-08');
+(15, 'РосПродукт', 'Сбербанк', '79109792161', '2023-10-24'),
+(16, 'Метро', 'Сбербанк', '79876534567', '2023-10-08');
 
 --
 -- Индексы сохранённых таблиц
@@ -408,6 +412,13 @@ ALTER TABLE `supplier`
   ADD PRIMARY KEY (`id_Sup`);
 
 --
+-- Индексы таблицы `supplier_cats`
+--
+ALTER TABLE `supplier_cats`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sup_cat` (`supplier_id`);
+
+--
 -- Индексы таблицы `supplier_rep`
 --
 ALTER TABLE `supplier_rep`
@@ -421,25 +432,31 @@ ALTER TABLE `supplier_rep`
 -- AUTO_INCREMENT для таблицы `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `id_Inv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id_Inv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT для таблицы `product_invoice`
 --
 ALTER TABLE `product_invoice`
-  MODIFY `id_prod_inv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `id_prod_inv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT для таблицы `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `id_stock` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id_stock` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
+--
+-- AUTO_INCREMENT для таблицы `supplier_cats`
+--
+ALTER TABLE `supplier_cats`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `supplier_rep`
 --
 ALTER TABLE `supplier_rep`
-  MODIFY `id_rep_sup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_rep_sup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -461,7 +478,7 @@ ALTER TABLE `invoice`
 -- Ограничения внешнего ключа таблицы `product_invoice`
 --
 ALTER TABLE `product_invoice`
-  ADD CONSTRAINT `id_Inv` FOREIGN KEY (`id_Inv`) REFERENCES `invoice` (`id_Inv`),
+  ADD CONSTRAINT `id_Inv` FOREIGN KEY (`id_Inv`) REFERENCES `invoice` (`id_Inv`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `id_prod` FOREIGN KEY (`id_prod`) REFERENCES `product` (`id_prod`);
 
 --
@@ -469,6 +486,12 @@ ALTER TABLE `product_invoice`
 --
 ALTER TABLE `stock`
   ADD CONSTRAINT `id_product` FOREIGN KEY (`id_product`) REFERENCES `product` (`id_prod`);
+
+--
+-- Ограничения внешнего ключа таблицы `supplier_cats`
+--
+ALTER TABLE `supplier_cats`
+  ADD CONSTRAINT `sup_cat` FOREIGN KEY (`supplier_id`) REFERENCES `supplier` (`id_Sup`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
